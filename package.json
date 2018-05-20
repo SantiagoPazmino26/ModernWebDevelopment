@@ -2,7 +2,6 @@
   "name": "mwd",
   "version": "0.0.0",
   "description": "mwd project",
-  "main": "index.js",
   "scripts": {
     "test": "npx jest --coverage",
     "build": "npx webpack --mode production",
@@ -22,6 +21,7 @@
   },
   "homepage": "https://github.com/SantiagoPazmino26/ModernWebDevelopment#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-jest": "^22.4.4",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",

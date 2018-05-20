@@ -2,7 +2,7 @@
 	"env": {
 		"development":{
 			"presets": [
-				["env", {"targets": "chrome" : "65"}}],
+				["env", {"targets": {"chrome" : "65"}}],
 				"react"
 			],
 			"plugins": [
@@ -26,7 +26,7 @@
 			"plugins": [
 				"transform-decorators-legacy",
 				"transform-object-rest-spread"
-			}
+			]
 		}
 	}
 }

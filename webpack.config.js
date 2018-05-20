@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const path require('path')
+const path = require('path')
 const appModulePath = path.resolve(__dirname, 'src')
 
 module.exports = {
@@ -38,8 +38,8 @@ module.exports = {
 			new HtmlWebpackPlugin({template: __dirname + '/index.html'}),
 			new CleanWebpackPlugin(['dist']),
 			],
-		devtool; 'source-map',
-		devserver: {
+		devtool: 'source-map',
+		devServer: {
 			proxy: {
 				"/api": {
 					target: "http://localhost:3000/api",
