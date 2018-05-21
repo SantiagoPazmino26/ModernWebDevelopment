@@ -7,8 +7,7 @@ import ReactDOM from 'react-dom'
 import reducer from './reducer'
 import App from './App'
 
-const store = createStore(reducer, 
-		composeWithDevtools(applyMiddleware(thunk)))
+const store = createStore(reducer)
 		
 ReactDOM.render(
 	<Provider store={store}>
