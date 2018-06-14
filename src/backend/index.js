@@ -1,13 +1,30 @@
-import Koa from 'koa'
-import serve from 'koa-static'
+import './import_paths'
+
+import mongoose from 'mongoose'
+import express, {Router} from 'express'
+import bodyParser from "body-parser"
+
+import {initAuth, authApi} from 'backend/auth'
+import {meApi, userApi, boatApi} from 'backend/controllers'
 
 async function main() {
-		{
-			const app = new Koa()
-			app.use(serve('dist'))
-			
-			app.listen(3000)
-		}
+    await mongoose.connect('mongodb://localhost/address-book')
+
+    const routes = new Router()
+    routes.use(authApi())
+    routes.use(meApi())
+    routes.use(boatApi())
+    routes.use(userApi())
+
+    const app = express()
+    initAuth(app)
+
+    app.use(bodyParser.json())
+
+    app.use('/api', routes)
+
+    app.listen(3000)
+    console.log('listening on :3000')
 }
 
 main()
