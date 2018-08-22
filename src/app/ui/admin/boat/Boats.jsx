@@ -15,8 +15,9 @@ export default class Boats extends React.Component {
     }
 
     render() {
-        const boats = this.props.contacts.map(boat => <Boat key={boat._id} {...boat}/>)
+        const boats = this.props.boats.map(boat => <Boat key={boat._id} {...boat}/>)
         return <div style={s.container}>
+            Boats
             {boats}
             <div style={s.addLine}>
                 <SquareButton value="+" onClick={this.handleAdd}/>

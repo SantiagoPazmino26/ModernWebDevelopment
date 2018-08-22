@@ -5,7 +5,7 @@ import express, {Router} from 'express'
 import bodyParser from "body-parser"
 
 import {initAuth, authApi} from 'backend/auth'
-import {meApi, userApi, boatApi} from 'backend/controllers'
+import {meApi, userApi, boatApi, destinationApi, tripApi} from 'backend/controllers'
 
 async function main() {
     await mongoose.connect('mongodb://localhost/address-book')
@@ -14,6 +14,8 @@ async function main() {
     routes.use(authApi())
     routes.use(meApi())
     routes.use(boatApi())
+    routes.use(tripApi())
+    routes.use(destinationApi())
     routes.use(userApi())
 
     const app = express()

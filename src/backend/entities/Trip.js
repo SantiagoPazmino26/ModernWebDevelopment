@@ -8,11 +8,10 @@ import Destination, {destinationCollectionName} from './Destination'
 const tripsCollectionName = 'trips'
 
 const tripSchema = new Schema({
-    user: {
+    users: [{
         type: Schema.Types.ObjectId,
-        required: true,
         ref: userCollectionName,
-    },
+    }],
     boat: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -33,14 +32,14 @@ const tripSchema = new Schema({
 })
 
 tripSchema.plugin(mongooseHidden(), {hidden: {_id: false}})
-tripSchema.index({user: 1, boat: 1}, {unique: true})
+tripSchema.index({users: 1, boat: 1}, {unique: true})
 
 tripSchema.statics.list = async function() {
     return await this.find({}).select('_id boat destination')
 }
 
-tripSchema.statics.createChecked = async function(user, boat, destination) {
-    const retval = new this({user, boat, destination})
+tripSchema.statics.createChecked = async function(destination, boat, departure, user) {
+    const retval = new this({boat, destination})
     await retval.validate()
     if (await User.find({_id: user}).count() < 1) {
         throw {message: 'invalid user'}
@@ -51,11 +50,18 @@ tripSchema.statics.createChecked = async function(user, boat, destination) {
     if (await Destination.find({_id: destination}).count() < 1) {
         throw {message: 'invalid destination'}
     }
+    retval.departure.set(departure)
+    retval.users.add(user)
     return retval
 }
 
 tripSchema.statics.list = async function() {
     return await this.find({})
+}
+
+tripSchema.statics.getByName = async function(name) {
+    const res  = await this.findOne({name}).populate('trip').exec()
+    return res.trip
 }
 
 export default mongoose.model(tripsCollectionName, tripSchema)

@@ -1,44 +1,62 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import ComboSelect from 'react-combo-select'
+import DateTimePicker from 'react-datetime-picker'
 
-import {closeDialog, requestAddContact} from 'app/logic/actions'
+import {closeDialog, requestAddBoat, requestAddContact} from 'app/logic/actions'
 import Spacer from 'app/util/Spacer'
-import FlexGap from 'app/util/FlexGap'
 import User from './User'
-import s from './AddTrip.scss'
+import style from './AddTrip.scss'
 
-@connect(({ui: {addContact}, data: {userInfo: {_id}, contacts}}) => ({...addContact, userId: _id, contacts}))
+
+@connect(({ui: {addTrip}, data: {userInfo: {_id}, boats, destinations}}) => ({...addTrip, userId: _id, boats, destinations}))
 export default class AddTrip extends React.Component {
     constructor() {
         super()
-
+        this.state = {boat: '', destination: ''}
         this.handleCancel = () => this.props.dispatch(closeDialog())
-        this.handleSelect = contactId => {
-            const {userId, dispatch} = this.props
-            dispatch(requestAddContact(userId, contactId))
+        this.handleSubmit = () => {
+            const {dispatch} = this.props
+            const {boat, destination} = this.state
+            dispatch(requestAddTrip(boat, destination))
             dispatch(closeDialog())
         }
+        this.handleChangeBoat = event => this.setState({boat: event.target.value})
+        this.handleChangeDestination = event => this.setState({destination: event.target.value})
     }
 
     render() {
-        const {cachedUsers, userId, contacts} = this.props
-        const filteredUsers = cachedUsers.filter(user => {
-            const otherId = user._id
-            const isSelf = otherId === userId
-            const isContact = contacts.some(contact => contact._id === otherId)
-            return !(isSelf || isContact)
-        })
+        const {boats, destinations } = this.props
         const users = filteredUsers.map(user =>
             <div key={user._id}>
                 <User {...user} onSelect={this.handleSelect}/>
                 <Spacer/>
             </div>)
 
-        return <div style={s.container}>
-            <div>{users}</div>
-            <div style={s.cancelRow}>
+        return <form style={style.form} onSubmit={this.handleSubmit}>
+        <Spacer/>
+            <div style={style.formRow}>
+        <label style={style.label}>Boat</label>
+            <ComboSelect data={boats} map={text: name, value: _id} onChange={this.handleChangeBoat}/>
+            </div>
+            <div style={style.formRow}>
+                <label style={style.label}>Destination</label>
+                <ComboSelect data={destinations} map={text: 'name', value: '_id'} onChange={this.handleChangeDestination}/>
+            </div>
+            <div style={style.formRow}>
+                <label style={style.label}>Departure</label>
+                <DateTimePicker />
+            </div>
+            <div style={style.formRow}>
+                <label style={style.label}>Arrival</label>
+                <DateTimePicker />
+            </div>
+            <div className="row">
+                <input style={style.loginButton} type="submit" value="add"/>
+                </div>
+            <div style={style.cancelRow}>
                 <input type="button" value="cancel" onClick={this.handleCancel}/>
             </div>
-        </div>
+            </form>
     }
 }

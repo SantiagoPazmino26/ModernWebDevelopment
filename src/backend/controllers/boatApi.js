@@ -23,11 +23,11 @@ export default function boatApi() {
         next()
     })
 
-    router.post('/boat/new', ensureAuthenticated, async (req, res, next) => {
+    router.post('/boat/add', ensureAuthenticated, async (req, res, next) => {
         let doc
         try {
-            const {boat} = req.body
-            doc = await Boat.createChecked(boat)
+            const {name, capacity} = req.body
+            doc = await Boat.createChecked(name, capacity)
         } catch (err) {
             res.status(400).json({error: err.message}).end()
             return

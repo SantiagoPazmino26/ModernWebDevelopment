@@ -4,10 +4,10 @@ import {connect} from 'react-redux'
 import {requestRemoveBoat} from 'app/logic/actions'
 import SquareButton from 'app/util/SquareButton'
 import FlexGap from 'app/util/FlexGap'
-import style from './Boat.scss'
+import style from './Destination.scss'
 
 @connect()
-export default class Boat extends React.Component {
+export default class Destination extends React.Component {
     constructor() {
         super()
 
@@ -18,11 +18,11 @@ export default class Boat extends React.Component {
     }
 
     render() {
-        const {name, capacity} = this.props
+        const {name, code} = this.props
 
         return <div style={style.container}>
             <div>{name}</div>
-            <div>{capacity}</div>
+            <div>{code}</div>
             <FlexGap/>
             <SquareButton style={style.deleteButton} value="x" onClick={this.handleDelete}/>
         </div>

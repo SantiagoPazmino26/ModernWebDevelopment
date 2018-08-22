@@ -9,9 +9,21 @@ import {
     OPEN_LOGIN_PAGE,
     OPEN_SIGNUP_PAGE,
     ADD_BOAT,
-    SET_BOATS
+    SET_BOATS,
+    OPEN_ADD_BOAT_DIALOG,
+    OPEN_ADD_DESTINATION_DIALOG,
+    OPEN_ADD_TRIP_DIALOG,
+    ADD_DESTINATION,
+    SET_DESTINATIONS
 } from './actions'
-import {DIALOG_ADD_CONTACT, LOGIN_LOGIN, LOGIN_SIGNUP} from './constants'
+import {
+    DIALOG_ADD_CONTACT,
+    LOGIN_LOGIN,
+    LOGIN_SIGNUP,
+    DIALOG_ADD_BOAT,
+    DIALOG_ADD_DESTINATION,
+    DIALOG_ADD_TRIP
+} from './constants'
 
 const initialState = () => ({
     ui: {
@@ -25,6 +37,9 @@ const initialState = () => ({
         userInfo: null,
         contacts: [],
         boats: [],
+        destinations: [],
+        users: [],
+        trips: []
     },
 })
 
@@ -45,6 +60,15 @@ function uiReducer(uiState, {type, payload}) {
         }
         case OPEN_SIGNUP_PAGE: {
                 return {...uiState, loginPage: LOGIN_SIGNUP}
+        }
+        case OPEN_ADD_BOAT_DIALOG: {
+            return {...uiState, dialog: DIALOG_ADD_BOAT}
+        }
+        case OPEN_ADD_DESTINATION_DIALOG: {
+            return {...uiState, dialog: DIALOG_ADD_DESTINATION}
+        }
+        case OPEN_ADD_TRIP_DIALOG: {
+            return {...uiState, dialog: DIALOG_ADD_TRIP}
         }
         default:
             return uiState
@@ -72,7 +96,14 @@ function dataReducer(dataState, {type, payload}) {
             return {...dataState, boats}
         }
         case SET_BOATS: {
-            return {...dataState, contacts: payload}
+            return {...dataState, boats: payload}
+        }
+        case ADD_DESTINATION: {
+            const destinations = [...dataState.destinations, payload]
+            return {...dataState, destinations}
+        }
+        case SET_DESTINATIONS: {
+            return {...dataState, destinations: payload}
         }
         default:
             return dataState

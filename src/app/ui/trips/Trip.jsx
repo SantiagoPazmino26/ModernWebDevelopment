@@ -17,7 +17,7 @@ export default class Trip extends React.Component {
     }
 
     render() {
-        const {boat, user, destination, departure, arrival} = this.props
+        const {boat, users, destination, departure, arrival} = this.props
 
         return <tr style={style.container}>
             <td>

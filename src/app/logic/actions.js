@@ -27,6 +27,16 @@ export const openSignupPage =  () => ({type: OPEN_SIGNUP_PAGE})
 export const OPEN_ADD_BOAT_DIALOG = 'UI/OPEN_ADD_BOAT_DIALOG'
 export const openAddBoatDialog = () => ({type: OPEN_ADD_BOAT_DIALOG})
 
+//ui//destination
+
+export const OPEN_ADD_DESTINATION_DIALOG = 'UI/OPEN_ADD_DESTINATION_DIALOG'
+export const openAddDestinationDialog = () => ({type: OPEN_ADD_DESTINATION_DIALOG})
+
+//ui//trip
+
+export const OPEN_ADD_TRIP_DIALOG = 'UI/OPEN_ADD_TRIP_DIALOG'
+export const openAddTripDialog = () => ({type: OPEN_ADD_TRIP_DIALOG})
+
 // data
 
 export const SET_USER_INFO = 'DATA/SET_USER_INFO'
@@ -48,6 +58,23 @@ export const addBoat = boat => ({type: ADD_BOAT, payload: boat})
 
 export const SET_BOATS = 'DATA/SET_BOATS'
 export const setBoats = boats => ({type: SET_BOATS, payload: boats})
+
+//data//destination
+
+export const ADD_DESTINATION = 'DATA/ADD_DESTINATION'
+export const addDestination = destination => ({type: ADD_DESTINATION, payload: destination})
+
+export const SET_DESTINATIONS = 'DATA/SET_DESTINATIONS'
+export const setDestinations = destinations => ({type: SET_DESTINATIONS, payload: destinations})
+
+//data//trips
+
+export const ADD_TRIP = 'DATA/ADD_TRIP'
+export const addTrip = trip => ({type: ADD_TRIP, payload: trip})
+
+export const SET_TRIPS = 'DATA/SET_TRIPS'
+export const setTrips = trips => ({type: SET_TRIPS, payload: trips})
+
 
 // thunks
 
@@ -78,6 +105,10 @@ export const requestData = () => async dispatch => {
         dispatch(setUserInfo(userRes.data))
         const contactsRes = await axios.get('/api/me/contacts')
         dispatch(setContacts(contactsRes.data.contacts))
+        const boatsRes = await axios.get('/api/boat/all')
+        dispatch(setBoats(boatsRes.data.boats))
+        const destinationsRes = await axios.get('/api/destination/all')
+        dispatch(setDestinations(destinationsRes.data.destinations))
     } catch (e) {
         console.error(e)
     }
@@ -126,11 +157,10 @@ export const requestRemoveContact = _id => async dispatch => {
 }
 
 
-export const requestAddBoat = (name, code) => async dispatch => {
+export const requestAddBoat = (name, capacity) => async dispatch => {
     try {
-        await axios.post('/api/boat/add', {name, code})
-        const {data} = await axios.get(`/api/boat/findByName/${name}`)
-        dispatch(addBoat(data))
+        const boat =await axios.post('/api/boat/add', {name, capacity})
+        dispatch(addBoat(boat.data))
     } catch (e) {
         console.error(e)
     }
@@ -147,7 +177,34 @@ export const requestBoats = () => async dispatch => {
 
 export const requestRemoveBoat = _id => async dispatch => {
     try {
-        const {data} = await axios.delete(`/api/me/contact/${_id}`)
+        const {data} = await axios.delete(`/api/boat/delete/${_id}`)
+        dispatch(removeContact(_id))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+export const requestAddDestination = (name, code) => async dispatch => {
+    try {
+        const destination = await axios.post('/api/destination/add', {name, code})
+        dispatch(addDestination(destination.data))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+export const requestDestinations = () => async dispatch => {
+    try {
+        const destinations = await axios.get('/api/destination/all')
+        dispatch(setBoats(destinations.data.destinations))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+export const requestRemoveDestination = _id => async dispatch => {
+    try {
+        const {data} = await axios.delete(`/api/destination/delete/${_id}`)
         dispatch(removeContact(_id))
     } catch (e) {
         console.error(e)
@@ -158,7 +215,20 @@ export const startAddTripDialog = () => async dispatch => {
     try {
         const usersRes = await axios.get('/api/users')
         dispatch(setCachedUsers(usersRes.data.users))
-        dispatch(openAddContactDialog())
+        const boatsRes = await axios.get('/api/boat/all')
+        dispatch(setBoats(boatsRes.data.boats))
+        const destinationsRes = await axios.get('/api/destination/all')
+        dispatch(setDestinations(destinationsRes.data.destinations))
+        dispatch(openAddTripDialog())
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+export const requestAddTrip = (destination, boat, departure, user) => async dispatch => {
+    try {
+        const trip = await axios.post('/api/trip/add', {destination, boat, departure, user})
+        dispatch(addTrip(trip.data))
     } catch (e) {
         console.error(e)
     }

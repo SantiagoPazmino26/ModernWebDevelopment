@@ -15,20 +15,22 @@ export default class Trips extends React.Component {
     }
 
     render() {
-        const trips = this.props.contacts.map(trip => <Trip key={trip._id} {...trip}/>)
+        const trips = this.props.trips.map(trip => <Trip key={trip._id} {...trip}/>)
         return <div style={s.container}>
             <table>
+                <thead>
                 <tr>
-                    <th>
-                        <td>Boat</td>
-                        <td>Crew</td>
-                        <td>Destination</td>
-                        <td>Departure</td>
-                        <td>Arrival</td>
-                        <td>Actions</td>
-                    </th>
+                        <th>Boat</th>
+                        <th>Crew</th>
+                        <th>Destination</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Actions</th>
                 </tr>
+                </thead>
+                <tbody>
                 {trips}
+                </tbody>
             </table>
             <div style={s.addLine}>
                 <SquareButton value="+" onClick={this.handleAdd}/>
