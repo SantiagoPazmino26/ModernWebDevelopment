@@ -9,7 +9,7 @@ export default class Login extends React.Component {
     constructor() {
         super()
 
-        this.state = {email: 'b@b.com', password: '00fh00'}
+        this.state = {email: '', password: ''}
 
         this.handleSubmit = event => {
             event.preventDefault()

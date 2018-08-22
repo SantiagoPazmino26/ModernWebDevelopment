@@ -12,7 +12,7 @@ import style from './App.scss'
 import Destinations from "./admin/destination/Destinations";
 import AddDestination from "./admin/destination/AddDestination";
 import Trips from "./trips/Trips";
-import AddTrip from "./trips/AddTrip";
+
 
 
 @connect(({ui: {dialog}}) => ({dialog}))
@@ -32,9 +32,6 @@ export default class App extends React.Component {
         else if(dialog === DIALOG_ADD_DESTINATION){
             return modalContent = <Dialog title="ADD DESTINATION"><AddDestination/></Dialog>
         }
-        else if(dialog === DIALOG_ADD_TRIP){
-            return modalContent = <Dialog title="ADD TRIP"><gitAddTrip/></Dialog>
-        }
         else {
             modalContent = <div> </div>
         }
@@ -44,7 +41,6 @@ export default class App extends React.Component {
             <Contacts/>
             <Boats/>
             <Destinations/>
-            <Trips/>
             <Modal style={{content: style.modalContent}} isOpen={!!dialog}>{modalContent}</Modal>
             </div>
     }
