@@ -34,10 +34,6 @@ const tripSchema = new Schema({
 tripSchema.plugin(mongooseHidden(), {hidden: {_id: false}})
 tripSchema.index({users: 1, boat: 1}, {unique: true})
 
-tripSchema.statics.list = async function() {
-    return await this.find({}).select('_id boat destination')
-}
-
 tripSchema.statics.createChecked = async function(destination, boat, departure, user) {
     const retval = new this({boat, destination})
     await retval.validate()
@@ -50,13 +46,39 @@ tripSchema.statics.createChecked = async function(destination, boat, departure, 
     if (await Destination.find({_id: destination}).count() < 1) {
         throw {message: 'invalid destination'}
     }
-    retval.departure.set(departure)
-    retval.users.add(user)
+    retval.departure = departure
+    retval.users.push(user)
+    return retval
+}
+
+tripSchema.statics.joinChecked = async function(user, trip) {
+    const retval = new this({boat, destination})
+    await retval.validate()
+    if (await User.find({_id: user}).count() < 1) {
+        throw {message: 'invalid user'}
+    }
+    if (await Boat.find({_id: boat}).count() < 1) {
+        throw {message: 'invalid boat'}
+    }
+    if (await Destination.find({_id: destination}).count() < 1) {
+        throw {message: 'invalid destination'}
+    }
+    retval.departure = departure
+    retval.users.push(user)
+    return retval
+}
+
+tripSchema.statics.joinChecked = async function(user, trip) {
+    const retval = await this.findOne({_id: trip})
+    if (await User.find({_id: user}).count() < 1) {
+        throw {message: 'invalid user'}
+    }
+    retval.users.push(user)
     return retval
 }
 
 tripSchema.statics.list = async function() {
-    return await this.find({})
+    return await this.find({}).populate('boat').populate('destination').populate('users')
 }
 
 tripSchema.statics.getByName = async function(name) {

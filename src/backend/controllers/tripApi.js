@@ -17,7 +17,7 @@ export default function tripApi() {
             const trips = await Trip.list()
             res.json({trips})
         } catch (err) {
-            res.status(500).json({error: 'internal server error'}).end()
+            res.status(500).json({error: err.message}).end()
             return
         }
         next()
@@ -28,6 +28,28 @@ export default function tripApi() {
         try {
             const {destination, boat, departure, user} = req.body
             doc = await Trip.createChecked(destination, boat, departure, user)
+        } catch (err) {
+            res.status(400).json({error: err.message}).end()
+            return
+        }
+
+        let savedTrip
+        try {
+            savedTrip = await doc.save()
+        } catch (err) {
+            console.log(err)
+            res.status(500).end()
+            return
+        }
+        res.json(savedTrip)
+        next()
+    })
+
+    router.post('/trip/join', ensureAuthenticated, async (req, res, next) => {
+        let doc
+        try {
+            const {user, trip} = req.body
+            doc = await Trip.joinChecked(user, trip)
         } catch (err) {
             res.status(400).json({error: err.message}).end()
             return

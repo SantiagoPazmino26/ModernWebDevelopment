@@ -14,7 +14,9 @@ import {
     OPEN_ADD_DESTINATION_DIALOG,
     OPEN_ADD_TRIP_DIALOG,
     ADD_DESTINATION,
-    SET_DESTINATIONS
+    SET_DESTINATIONS,
+    ADD_TRIP,
+    SET_TRIPS
 } from './actions'
 import {
     DIALOG_ADD_CONTACT,
@@ -104,6 +106,13 @@ function dataReducer(dataState, {type, payload}) {
         }
         case SET_DESTINATIONS: {
             return {...dataState, destinations: payload}
+        }
+        case ADD_TRIP: {
+            const trips = [...dataState.trips, payload]
+            return {...dataState, trips}
+        }
+        case SET_TRIPS: {
+            return {...dataState, trips: payload}
         }
         default:
             return dataState

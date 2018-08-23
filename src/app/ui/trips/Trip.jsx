@@ -1,33 +1,39 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {requestRemoveContact} from 'app/logic/actions'
+import {requestRemoveTrip, requestJoinTrip} from 'app/logic/actions'
 import SquareButton from 'app/util/SquareButton'
 import style from './Trip.scss'
+import User from "../contacts/User";
 
-@connect()
+@connect(({data: {userInfo: {_id}}}) => ({userId: _id}))
 export default class Trip extends React.Component {
     constructor() {
         super()
 
         this.handleDelete = () => {
             const {_id, dispatch} = this.props
-            dispatch(requestRemoveContact(_id))
+            dispatch(requestRemoveTrip(_id))
+        }
+        this.handleJoin = () => {
+            const {_id, userId, dispatch} = this.props
+            dispatch(requestJoinTrip(userId, _id))
         }
     }
 
     render() {
-        const {boat, users, destination, departure, arrival} = this.props
+        const {boat, destination, departure, arrival} = this.props
+        const users = this.props.users.map(user => <User key={user._id} {...user}/>)
 
         return <tr style={style.container}>
             <td>
-                {boat}
+                {boat.name}
             </td>
             <td>
-                {user}
+                {users}
             </td>
             <td>
-                {destination}
+                {destination.name}
             </td>
             <td>
                 {departure}
@@ -36,6 +42,7 @@ export default class Trip extends React.Component {
                 {arrival}
             </td>
             <td>
+                <SquareButton value="JOIN" onClick={this.handleJoin}/>
                 <SquareButton style={style.deleteButton} value="x" onClick={this.handleDelete}/>
             </td>
         </tr>

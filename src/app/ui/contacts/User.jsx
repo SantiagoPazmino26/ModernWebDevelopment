@@ -18,10 +18,8 @@ export default class User extends React.Component {
 
     render() {
         const {email, nickname} = this.props
-        const avatarLetter = nickname[0]
 
         return <div style={s.container} onClick={this.handleClick}>
-            <Avatar value={avatarLetter}/>
             <Spacer horizontal/>
             <div>
                 <div>{nickname}</div>

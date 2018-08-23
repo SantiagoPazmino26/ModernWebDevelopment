@@ -109,6 +109,8 @@ export const requestData = () => async dispatch => {
         dispatch(setBoats(boatsRes.data.boats))
         const destinationsRes = await axios.get('/api/destination/all')
         dispatch(setDestinations(destinationsRes.data.destinations))
+        const tripsRes = await axios.get('/api/trip/all')
+        dispatch(setTrips(tripsRes.data.trips))
     } catch (e) {
         console.error(e)
     }
@@ -225,10 +227,29 @@ export const startAddTripDialog = () => async dispatch => {
     }
 }
 
-export const requestAddTrip = (destination, boat, departure, user) => async dispatch => {
+export const requestAddTrip = (boat, destination, departure, user) => async dispatch => {
     try {
         const trip = await axios.post('/api/trip/add', {destination, boat, departure, user})
         dispatch(addTrip(trip.data))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+export const requestRemoveTrip = _id => async dispatch => {
+    try {
+        const {data} = await axios.delete(`/api/me/contact/${_id}`)
+        dispatch(removeContact(_id))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+export const requestJoinTrip = (user, trip) => async dispatch => {
+    try {
+        const {data} = await axios.post(`/api/trip/join`, {user, trip})
+        const tripsRes = await axios.get('/api/trip/all')
+        dispatch(setTrips(tripsRes.data.trips))
     } catch (e) {
         console.error(e)
     }
