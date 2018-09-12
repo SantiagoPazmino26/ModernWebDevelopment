@@ -49,10 +49,13 @@ module.exports = {
     ],
     devtool: 'source-map',
     devServer: {
+        //host: '192.168.178.10',
+        //port: 8080,
         proxy: {
             "/api": {
-                target: "http://localhost:3000/api",
+                target: "https://localhost:3000/api",
                 pathRewrite: {"^/api": ""},
+                secure: false
             }
         }
     }

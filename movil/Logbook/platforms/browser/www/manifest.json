@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Logbook",
+  "short_name": "Logbook",
+  "version": "com.logbook.logbook",
+  "description": "A n application to connect to a backend server to manage a log of trips.",
+  "author": "MWD",
+  "icons": [],
+  "start_url": "index.html"
+}

@@ -7,7 +7,7 @@ const appModulePath = path.resolve(__dirname, 'src')
 module.exports = {
     entry: './src/app/index.jsx',
     output: {
-        path: __dirname + '/dist',
+        path: __dirname + '/www/dist',
         filename: 'bundle.js',
     },
     module: {
@@ -45,7 +45,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({template: __dirname + '/index.html'}),
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['/www/dist']),
     ],
     devtool: 'source-map',
 }

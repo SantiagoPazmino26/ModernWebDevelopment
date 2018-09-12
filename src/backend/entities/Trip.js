@@ -32,7 +32,7 @@ const tripSchema = new Schema({
 })
 
 tripSchema.plugin(mongooseHidden(), {hidden: {_id: false}})
-tripSchema.index({users: 1, boat: 1}, {unique: true})
+tripSchema.index({users: 1, boat: 1,departure:1}, {unique: true})
 
 tripSchema.statics.createChecked = async function(destination, boat, departure, user) {
     const retval = new this({boat, destination})

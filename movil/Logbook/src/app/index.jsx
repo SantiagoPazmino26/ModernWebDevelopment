@@ -12,6 +12,7 @@ import './global.gscss'
 
 import moment from 'moment'
 import {requestData} from "./logic/actions"
+import setAuthHeader from "./util/setAuthHeader";
 global.moment = moment
 
 const store = createStore(

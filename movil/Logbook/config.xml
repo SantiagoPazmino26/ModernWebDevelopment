@@ -1,21 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>HelloCordova</name>
+<widget id="com.logbook.logbook" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Logbook</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        A n application to connect to a backend server to manage a log of trips.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="blacksantzero@gmail.com" href="https://github.com/SantiagoPazmino26/ModernWebDevelopment">
+        MWD
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <allow-intent href="https://localhost:3000/*/*/*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="http://localhost:3000/*/*/*" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
@@ -24,4 +26,5 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="android" spec="^6.2.3" />
+    <engine name="browser" spec="^5.0.4" />
 </widget>

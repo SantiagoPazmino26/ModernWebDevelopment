@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.logbook.logbook" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Logbook</name>
+    <description>
+        A n application to connect to a backend server to manage a log of trips.
+    </description>
+    <author email="blacksantzero@gmail.com" href="https://github.com/SantiagoPazmino26/ModernWebDevelopment">
+        MWD
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="https://localhost:3000/*/*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-navigation href="http://localhost:3000/*/*/*" />
+</widget>

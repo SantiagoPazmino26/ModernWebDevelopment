@@ -1,4 +1,4 @@
-#Sat Sep 01 21:28:54 CEST 2018
+#Tue Sep 04 14:09:07 CEST 2018
 base.0=/home/santiago/Projects/ModernWebDevelopment/movil/Logbook/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex

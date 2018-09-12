@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import setAuthHeader from "../util/setAuthHeader";
 // plain actions
 
 export const RESET_APP = "RESET_APP";
@@ -116,15 +116,15 @@ export const requestAddContact = (user, contact) => async dispatch => {
 
 export const requestData = () => async dispatch => {
   try {
-    const userRes = await axios.get("/api/me");
+    const userRes = await axios.get("/api/me",setAuthHeader());
     dispatch(setUserInfo(userRes.data));
-    const contactsRes = await axios.get("/api/me/contacts");
+    const contactsRes = await axios.get("/api/me/contacts",setAuthHeader());
     dispatch(setContacts(contactsRes.data.contacts));
-    const boatsRes = await axios.get("/api/boat/all");
+    const boatsRes = await axios.get("/api/boat/all",setAuthHeader());
     dispatch(setBoats(boatsRes.data.boats));
-    const destinationsRes = await axios.get("/api/destination/all");
+    const destinationsRes = await axios.get("/api/destination/all",setAuthHeader());
     dispatch(setDestinations(destinationsRes.data.destinations));
-    const tripsRes = await axios.get("/api/trip/all");
+    const tripsRes = await axios.get("/api/trip/all",setAuthHeader());
     dispatch(setTrips(tripsRes.data.trips));
   } catch (e) {
     console.error(e);
@@ -134,11 +134,9 @@ export const requestData = () => async dispatch => {
 export const requestLogin = (email, password) => async dispatch => {
   try {
     const loginRes = await axios.put("/api/auth/login", { email, password });
-    dispatch(setUserInfo(loginRes.data));
-    const contactsRes = await axios.get("/api/me/contacts");
-    dispatch(setContacts(contactsRes.data.contacts));
-    const boats = await axios.get("/api/boat/all");
-    dispatch(setBoats(boats.data.boats));
+      localStorage.setItem("token",loginRes.data.token);
+      dispatch(setUserInfo(loginRes.data.user));
+      requestData();
   } catch (e) {
     console.error(e);
   }
@@ -151,9 +149,8 @@ export const requestSignup = (email, nickname, password) => async dispatch => {
       nickname,
       password
     });
-    dispatch(setUserInfo(signupRes.data));
-    const contactsRes = await axios.get("/api/me/contacts");
-    dispatch(setContacts(contactsRes.data.contacts));
+      localStorage.setItem("token",signupRes.data.token);
+      dispatch(setUserInfo(signupRes.data.savedUser));
   } catch (e) {
     console.error(e);
   }
@@ -161,7 +158,8 @@ export const requestSignup = (email, nickname, password) => async dispatch => {
 
 export const requestLogout = () => async dispatch => {
   try {
-    await axios.put("/api/auth/logout", {});
+    await axios.put("/api/auth/logout",setAuthHeader());
+      localStorage.removeItem("token");
     dispatch(resetApp());
   } catch (e) {
     console.error(e);
@@ -170,7 +168,7 @@ export const requestLogout = () => async dispatch => {
 
 export const requestRemoveContact = _id => async dispatch => {
   try {
-    const { data } = await axios.delete(`/api/me/contact/${_id}`);
+    const { data } = await axios.delete(`/api/me/contact/${_id}`,setAuthHeader());
     dispatch(removeContact(_id));
   } catch (e) {
     console.error(e);
@@ -179,7 +177,7 @@ export const requestRemoveContact = _id => async dispatch => {
 
 export const requestAddBoat = (name, capacity) => async dispatch => {
   try {
-    const boat = await axios.post("/api/boat/add", { name, capacity });
+    const boat = await axios.post("/api/boat/add", { name, capacity },setAuthHeader());
     dispatch(addBoat(boat.data));
   } catch (e) {
     console.error(e);
@@ -188,7 +186,7 @@ export const requestAddBoat = (name, capacity) => async dispatch => {
 
 export const requestBoats = () => async dispatch => {
   try {
-    const boats = await axios.get("/api/boat/all");
+    const boats = await axios.get("/api/boat/all",setAuthHeader());
     dispatch(setBoats(boats.data.boats));
   } catch (e) {
     console.error(e);
@@ -197,7 +195,7 @@ export const requestBoats = () => async dispatch => {
 
 export const requestRemoveBoat = _id => async dispatch => {
   try {
-    const { data } = await axios.delete(`/api/boat/delete/${_id}`);
+    const { data } = await axios.delete(`/api/boat/delete/${_id}`,setAuthHeader());
     dispatch(removeContact(_id));
   } catch (e) {
     console.error(e);
@@ -209,7 +207,7 @@ export const requestAddDestination = (name, code) => async dispatch => {
     const destination = await axios.post("/api/destination/add", {
       name,
       code
-    });
+    },setAuthHeader());
     dispatch(addDestination(destination.data));
   } catch (e) {
     console.error(e);
@@ -218,7 +216,7 @@ export const requestAddDestination = (name, code) => async dispatch => {
 
 export const requestDestinations = () => async dispatch => {
   try {
-    const destinations = await axios.get("/api/destination/all");
+    const destinations = await axios.get("/api/destination/all",setAuthHeader());
     dispatch(setBoats(destinations.data.destinations));
   } catch (e) {
     console.error(e);
@@ -227,7 +225,7 @@ export const requestDestinations = () => async dispatch => {
 
 export const requestRemoveDestination = _id => async dispatch => {
   try {
-    const { data } = await axios.delete(`/api/destination/delete/${_id}`);
+    const { data } = await axios.delete(`/api/destination/delete/${_id}`,setAuthHeader());
     dispatch(removeContact(_id));
   } catch (e) {
     console.error(e);
@@ -236,11 +234,11 @@ export const requestRemoveDestination = _id => async dispatch => {
 
 export const startAddTripDialog = () => async dispatch => {
   try {
-    const usersRes = await axios.get("/api/users");
+    const usersRes = await axios.get("/api/users",setAuthHeader());
     dispatch(setCachedUsers(usersRes.data.users));
-    const boatsRes = await axios.get("/api/boat/all");
+    const boatsRes = await axios.get("/api/boat/all",setAuthHeader());
     dispatch(setBoats(boatsRes.data.boats));
-    const destinationsRes = await axios.get("/api/destination/all");
+    const destinationsRes = await axios.get("/api/destination/all",setAuthHeader());
     dispatch(setDestinations(destinationsRes.data.destinations));
     dispatch(openAddTripDialog());
   } catch (e) {
@@ -260,7 +258,7 @@ export const requestAddTrip = (
       boat,
       departure,
       user
-    });
+    },setAuthHeader());
     dispatch(addTrip(trip.data));
   } catch (e) {
     console.error(e);
@@ -279,7 +277,7 @@ export const requestRemoveTrip = _id => async dispatch => {
 
 export const requestJoinTrip = (user, trip) => async dispatch => {
   try {
-    const { data } = await axios.post(`/api/trip/join`, { user, trip });
+    const { data } = await axios.post(`/api/trip/join`, { user, trip },setAuthHeader());
     const tripsRes = await axios.get("/api/trip/all");
     dispatch(setTrips(tripsRes.data.trips));
   } catch (e) {

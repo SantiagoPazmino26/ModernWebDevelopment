@@ -62,7 +62,6 @@ userSchema.statics.findAuthenticated = async function(email, password) {
     if (!await bcrypt.compare(password, user.password)) {
         throw {message: 'invalid password'}
     }
-
     return user
 }
 
