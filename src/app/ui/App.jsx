@@ -3,7 +3,6 @@ import Modal from 'react-modal'
 import {connect} from 'react-redux'
 
 import {DIALOG_ADD_CONTACT, DIALOG_ADD_BOAT, DIALOG_ADD_DESTINATION,DIALOG_ADD_TRIP} from 'app/logic/constants'
-import Contacts from 'app/ui/contacts/Contacts'
 import Boats from 'app/ui/admin/boat/Boats'
 import AddContact from 'app/ui/contacts/AddContact'
 import AddBoat from 'app/ui/admin/boat/AddBoat'
@@ -13,15 +12,16 @@ import Destinations from "./admin/destination/Destinations";
 import AddDestination from "./admin/destination/AddDestination";
 import Trips from "./trips/Trips";
 import AddTrip from "./trips/AddTrip";
+import FlexGap from "../util/FlexGap";
 
-@connect(({ui: {dialog}}) => ({dialog}))
+@connect(({ui: {dialog}, data: {userInfo}}) => ({dialog, userInfo}))
 export default class App extends React.Component {
     constructor() {
         super()
     }
 
     render() {
-        const {dialog} = this.props
+        const {dialog, userInfo} = this.props
         let modalContent
         if (dialog === DIALOG_ADD_CONTACT) {
             modalContent = <Dialog title="ADD CONTACT"><AddContact/></Dialog>
@@ -38,11 +38,21 @@ export default class App extends React.Component {
             modalContent = <div> </div>
         }
 
+        let adminContent
+
+        if (userInfo.admin){
+            adminContent =  <div><Boats/>
+                <FlexGap/>
+                <Destinations/>
+                <FlexGap/></div>
+        }else{
+            adminContent = <div></div>
+        }
+
         return <div style={style.mainArea}>
-            <Contacts/>
-            <Boats/>
-            <Destinations/>
+            {adminContent}
             <Trips/>
+            <FlexGap/>
             <Modal style={{content: style.modalContent}} isOpen={!!dialog}>{modalContent}</Modal>
             </div>
     }

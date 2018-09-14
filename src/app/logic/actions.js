@@ -118,8 +118,6 @@ export const requestData = () => async dispatch => {
   try {
     const userRes = await axios.get("/api/me",setAuthHeader());
     dispatch(setUserInfo(userRes.data));
-    const contactsRes = await axios.get("/api/me/contacts",setAuthHeader());
-    dispatch(setContacts(contactsRes.data.contacts));
     const boatsRes = await axios.get("/api/boat/all",setAuthHeader());
     dispatch(setBoats(boatsRes.data.boats));
     const destinationsRes = await axios.get("/api/destination/all",setAuthHeader());
@@ -278,7 +276,7 @@ export const requestRemoveTrip = _id => async dispatch => {
 export const requestJoinTrip = (user, trip) => async dispatch => {
   try {
     const { data } = await axios.post(`/api/trip/join`, { user, trip },setAuthHeader());
-    const tripsRes = await axios.get("/api/trip/all");
+    const tripsRes = await axios.get("/api/trip/all",setAuthHeader());
     dispatch(setTrips(tripsRes.data.trips));
   } catch (e) {
     console.error(e);

@@ -1,9 +1,7 @@
 import passport from "passport"
 
 export default function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        next()
-    } else if (req.query.token){
+    if (req.query.token){
         passport.authenticate('jwt', {session: false})
         next()
     }

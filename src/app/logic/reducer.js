@@ -41,7 +41,8 @@ const initialState = () => ({
         boats: [],
         destinations: [],
         users: [],
-        trips: []
+        trips: [],
+        user: null
     },
 })
 

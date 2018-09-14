@@ -22,7 +22,7 @@ export default function initAuth(app) {
         cookie: {},
     }
     //app.use(session(sessionConfig))
-    //app.use(passport.initialize())
+    app.use(passport.initialize())
     //app.use(passport.session())
     //passport.use('local', new AuthStrategy())
 
