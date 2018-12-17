@@ -5,8 +5,7 @@
   "scripts": {
     "test": "npx jest --coverage",
     "build": "npx webpack --mode production",
-    "start": "./scripts/start.sh",
-    "heroku-postbuild": "npx webpack --mode production"
+    "start": "./scripts/start.sh"
   },
   "repository": {
     "type": "git",
