@@ -6,6 +6,7 @@
     "test": "npx jest --coverage",
     "build": "npx webpack --mode production",
     "start": "./scripts/start.sh"
+    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "repository": {
     "type": "git",
